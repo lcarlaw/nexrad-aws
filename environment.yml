@@ -1,0 +1,8 @@
+name: nexrad-aws
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - s3fs
+  - numpy
+prefix: /Users/leecarlaw/anaconda3/envs/nexrad-aws
