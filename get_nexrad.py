@@ -116,8 +116,8 @@ def grab_data(start_time, end_time, radar_id, local_path=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('-s', '--start-time', dest='start_time', help="First scan time [YYYYMMDDHHmm]")
-    ap.add_argument('-e', '--end_time', dest='end_time', help="Last scane time [YYYYMMDDHHmm]")
+    ap.add_argument('-s', '--start-time', dest='start_time', help="First scan time [YYYY-MM-DD/HHmm]")
+    ap.add_argument('-e', '--end_time', dest='end_time', help="Last scan time [YYYY-MM-DD/HHmm]")
     ap.add_argument('-r', '--radar_id', dest='radar_id', help="4-letter radar identifier [e.g. KLOT]")
     ap.add_argument('-p', '--local-path', dest='local_path', help="Path to store netCDF files")
     args = ap.parse_args()
