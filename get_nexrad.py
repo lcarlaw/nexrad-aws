@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 import argparse
 import numpy as np
 from collections import defaultdict
+from concurrent import futures
 import itertools
 
 import s3fs
@@ -103,16 +104,30 @@ def grab_data(start_time, end_time, radar_id, local_path=None):
 
     # Continue on to download step?
     if resp == 'y':
-        for f in downloads.keys():
-            print("Downloading: ", downloads[f])
-            fs.get(f, downloads[f])
+        #download_serial(downloads, fs)
+        download_multithread(downloads, fs)
+
     else:
         print("==================")
         print("===  Goodbye!  ===")
         print("==================")
         sys.exit(0)
-
     return
+
+def download_multithread(downloads, fs, threads=6):
+    def _execute_download(key):
+        fs.get(key, downloads[key])
+
+    with futures.ThreadPoolExecutor(max_workers=threads) as executor:
+        future_key = {executor.submit(_execute_download, key): key for key in downloads.keys()}
+        
+        #for future in futures.as_completed(future_key):
+        #    key = future_key[future]
+
+def download_serial(downloads, fs):
+    for f in downloads.keys():
+            print("Downloading: ", downloads[f])
+            fs.get(f, downloads[f])
 
 def main():
     ap = argparse.ArgumentParser()
